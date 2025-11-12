@@ -51,11 +51,3 @@ module "box" {
   preconfigured_app = "boxnet"
   group_names       = ["FT_BOX_ADMINS"]
 }
-
-######## WEB SAML PRECONFIG ########
-module "salesforc_app" {
-  source            = "./modules/okta-app-web-saml-preconfig"
-  label             = "Salesforce Beta"
-  preconfigured_app = "Salesforce"
-  group_names       = ["Salesforce Beta Users"]
-}
