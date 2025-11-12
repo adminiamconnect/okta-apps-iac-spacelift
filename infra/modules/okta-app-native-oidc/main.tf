@@ -17,7 +17,7 @@ locals {
 }
 
 resource "okta_app_group_assignments" "assign" {
-  app_id = okta_app_oauth.this.id
+  app_id = okta_app_oauth.native.id
   dynamic "group" {
     for_each = toset(local.all_group_ids)
     content { id = group.value }
@@ -25,11 +25,11 @@ resource "okta_app_group_assignments" "assign" {
 }
 
 output "app_id" {
-  value = okta_app_oauth.this.id
+  value = okta_app_oauth.native.id
 }
 
 output "client_id" {
-  value = okta_app_oauth.this.client_id
+  value = okta_app_oauth.native.client_id
 }
 
 output "assigned_group_ids" {
