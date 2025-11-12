@@ -3,7 +3,7 @@ module "groups" {
   group_names = var.group_names
 }
 
-resource "okta_app_saml" "this" {
+resource "okta_app_saml" "preconfig" {
   label             = var.label
   preconfigured_app = var.preconfigured_app
 }
@@ -13,12 +13,12 @@ locals {
 }
 
 resource "okta_app_group_assignments" "assign" {
-  app_id = okta_app_saml.this.id
+  app_id = okta_app_saml.preconfig.id
   dynamic "group" {
     for_each = toset(local.all_group_ids)
     content { id = group.value }
   }
 }
 
-output "app_id" { value = okta_app_saml.this.id }
+output "app_id" { value = okta_app_saml.preconfig.id }
 output "assigned_group_ids" { value = [for g in okta_app_group_assignments.assign.group : g.id] }

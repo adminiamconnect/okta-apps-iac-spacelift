@@ -3,7 +3,7 @@ module "groups" {
   group_names = var.group_names
 }
 
-resource "okta_app_oauth" "this" {
+resource "okta_app_oauth" "web" {
   label                     = var.label
   type                      = "web"
   grant_types               = var.grant_types
@@ -18,7 +18,7 @@ locals {
 }
 
 resource "okta_app_group_assignments" "assign" {
-  app_id = okta_app_oauth.this.id
+  app_id = okta_app_oauth.web.id
   dynamic "group" {
     for_each = toset(local.all_group_ids)
     content { id = group.value }
@@ -26,15 +26,15 @@ resource "okta_app_group_assignments" "assign" {
 }
 
 output "app_id" {
-  value = okta_app_oauth.this.id
+  value = okta_app_oauth.web.id
 }
 
 output "client_id" {
-  value = okta_app_oauth.this.client_id
+  value = okta_app_oauth.web.client_id
 }
 
 output "client_secret" {
-  value     = okta_app_oauth.this.client_secret
+  value     = okta_app_oauth.web.client_secret
   sensitive = true
 }
 
