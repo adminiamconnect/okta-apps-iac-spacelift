@@ -52,9 +52,9 @@ module "box" {
   group_names       = ["FT_BOX_ADMINS"]
 }
 
-module "salesforce_app" {
+module "salesforce" {
   source            = "./modules/okta-app-web-saml-preconfig"
-  label             = "Salesforce Beta App "
+  label             = "Salesforce Beta "
   preconfigured_app = "salesforce"
   group_names       = ["Salesforce_Beta_Users"]
 }
