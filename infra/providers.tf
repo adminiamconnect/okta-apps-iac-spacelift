@@ -14,8 +14,9 @@ variable "okta_max_api_capacity" {
 }
 
 provider "okta" {
-    max_api_capacity = var.okta_max_api_capacity
-org_name  = var.okta_org_name
-  base_url  = var.okta_base_url
-  api_token = var.okta_api_token
+  max_api_capacity = var.okta_max_api_capacity
+  org_name         = var.okta_org_name
+  base_url         = var.okta_base_url
+  api_token        = var.okta_api_token
+
 }
