@@ -3,7 +3,7 @@ module "groups" {
   group_names = var.group_names
 }
 
-resource "okta_app_oauth" "this" {
+resource "okta_app_oauth" "SPA" {
   label               = var.label
   type                = "browser" # SPA
   grant_types         = ["authorization_code", "refresh_token", "implicit"]
@@ -17,7 +17,7 @@ locals {
 }
 
 resource "okta_app_group_assignments" "assign" {
-  app_id = okta_app_oauth.this.id
+  app_id = okta_app_oauth.SPA.id
   dynamic "group" {
     for_each = toset(local.all_group_ids)
     content { id = group.value }
@@ -25,7 +25,7 @@ resource "okta_app_group_assignments" "assign" {
 }
 
 output "app_id" {
-  value = okta_app_oauth.this.id
+  value = okta_app_oauth.SPA.id
 }
 
 output "client_id" {
