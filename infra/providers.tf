@@ -8,10 +8,8 @@ variable "okta_api_token" {
 }
 
 provider "okta" {
-  org_name  = var.okta_org_name
-  base_url  = var.okta_base_url
-  api_token = var.okta_api_token
-
-  max_retries   = 10
-  retry_backoff = 5
+  org_name        = var.okta_org_name
+  base_url        = var.okta_base_url
+  api_token       = var.okta_api_token
+  max_api_capacity = 50   # start at 50% of org capacity; tune between 30–70
 }
