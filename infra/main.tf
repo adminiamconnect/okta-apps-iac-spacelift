@@ -53,7 +53,7 @@ module "box" {
 }
 
 ######## WEB SAML PRECONFIG ########
-module "salesforcebeta" {
+module "salesforc_app" {
   source            = "./modules/okta-app-web-saml-preconfig"
   label             = "Salesforce Beta"
   preconfigured_app = "Salesforce"
