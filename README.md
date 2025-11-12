@@ -172,3 +172,20 @@ Spacelift Documentation
 
 OpenTofu CLI Reference
 
+
+
+## Stability tweaks for Okta provider in CI
+
+This repo pins the Okta Terraform provider to the `~> 6.4` series and throttles
+API usage via `max_api_capacity` (default 50%).
+
+When running in Spacelift or CI, set Terraform parallelism conservatively to avoid
+rate limiting:
+
+```
+TF_CLI_ARGS_plan  = -parallelism=2
+TF_CLI_ARGS_apply = -parallelism=2
+```
+
+You can tune `var.okta_max_api_capacity` and the above parallelism values upward after
+a few stable runs.
