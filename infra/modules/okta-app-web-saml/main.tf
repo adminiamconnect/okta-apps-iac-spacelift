@@ -18,7 +18,10 @@ resource "okta_app_saml" "saml" {
   signature_algorithm     = var.signature_algorithm
   digest_algorithm        = var.digest_algorithm
   authn_context_class_ref = var.authn_context_class_ref
-  honor_force_authn       = true
+  # Ensure SAML assertions and responses are signed for stronger security.
+  response_signed   = true
+  assertion_signed  = true
+  honor_force_authn = true
 }
 
 locals {
