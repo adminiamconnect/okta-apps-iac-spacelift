@@ -44,7 +44,7 @@ variable "group_ids" {
 }
 
 variable "subject_name_id_template" {
-  type    = string
+  type = string
   # Default to the Okta template that uses the user's email as the NameID.
   # Use "$${...}" to keep the interpolation as a literal template rather than
   # attempting to evaluate variables in a default value (Terraform disallows
