@@ -4,11 +4,11 @@ module "groups" {
 }
 
 resource "okta_app_oauth" "this" {
-  label          = var.label
-  type           = "browser" # SPA
-  grant_types    = ["authorization_code", "refresh_token", "implicit"]
-  response_types = ["token", "id_token", "code"]
-  redirect_uris  = var.redirect_uris
+  label               = var.label
+  type                = "browser" # SPA
+  grant_types         = ["authorization_code", "refresh_token", "implicit"]
+  response_types      = ["token", "id_token", "code"]
+  redirect_uris       = var.redirect_uris
   implicit_assignment = false
 }
 

@@ -10,11 +10,11 @@ module "shared_groups" {
 
 ######## WEB OIDC ########
 module "ft_portal" {
-  source        = "./modules/okta-app-web-oidc"
-  label         = "ft-portal"
-  redirect_uris = ["https://portal.ft.com/callback"]
+  source                    = "./modules/okta-app-web-oidc"
+  label                     = "ft-portal"
+  redirect_uris             = ["https://portal.ft.com/callback"]
   post_logout_redirect_uris = ["https://portal.ft.com"]
-  group_ids     = [for g in module.shared_groups.groups : g.id]
+  group_ids                 = [for g in module.shared_groups.groups : g.id]
 }
 
 ######## SPA OIDC ########
@@ -35,13 +35,13 @@ module "ft_mobile" {
 
 ######## WEB SAML ########
 module "legacy_reporter" {
-  source       = "./modules/okta-app-web-saml"
-  label        = "legacy-reporter"
-  sso_url      = "https://legacy.ft.com/saml/acs"
-  recipient    = "https://legacy.ft.com/saml/acs"
-  destination  = "https://legacy.ft.com/saml/acs"
-  audience     = "https://legacy.ft.com/saml/metadata"
-  group_names  = ["FT_REPORTERS"]
+  source      = "./modules/okta-app-web-saml"
+  label       = "legacy-reporter"
+  sso_url     = "https://legacy.ft.com/saml/acs"
+  recipient   = "https://legacy.ft.com/saml/acs"
+  destination = "https://legacy.ft.com/saml/acs"
+  audience    = "https://legacy.ft.com/saml/metadata"
+  group_names = ["FT_REPORTERS"]
 }
 
 ######## WEB SAML PRECONFIG ########
