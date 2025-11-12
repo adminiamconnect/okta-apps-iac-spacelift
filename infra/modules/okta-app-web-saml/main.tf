@@ -11,7 +11,9 @@ resource "okta_app_saml" "this" {
   destination = var.destination
   audience    = var.audience
 
-  name_id_format      = var.name_id_format
+  # was: name_id_format = var.name_id_format
+  subject_name_id_format = var.subject_name_id_format
+
   signature_algorithm = var.signature_algorithm
   digest_algorithm    = var.digest_algorithm
   honor_force_authn   = true
