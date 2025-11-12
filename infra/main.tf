@@ -51,3 +51,14 @@ module "box" {
   preconfigured_app = "boxnet"
   group_names       = ["FT_BOX_ADMINS"]
 }
+
+######## WEB SAML ########
+module "salesforce_app" {
+  source      = "./modules/okta-app-web-saml"
+  label       = "Salesforce test"
+  sso_url     = "https://legacy.ft.com/saml/acs"
+  recipient   = "https://legacy.ft.com/saml/acs"
+  destination = "https://legacy.ft.com/saml/acs"
+  audience    = "https://legacy.ft.com/saml/metadata"
+  group_names = ["Salesforce Users"]
+}
