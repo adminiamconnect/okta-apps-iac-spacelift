@@ -2,8 +2,8 @@ terraform {
   required_version = ">= 1.5.0"
   required_providers {
     okta = {
-      source  = "okta/okta"
-      version = "= 6.2.1"   # <- known stable; avoids 6.4.x crashes
+      source  = "hashicorp/okta"
+      version = "= 6.3.1"     # stable; 6.2.1 also OK if you prefer
     }
   }
 }
