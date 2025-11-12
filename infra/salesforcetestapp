@@ -1,8 +1,0 @@
-# Test app deployment
-
-module "salesforcetest_spa_app" {
-  source        = "./modules/okta-app-spa-oidc"
-  label         = "Salesforce test app "
-  redirect_uris = ["https://test.ft.com/callback"]
-  group_names   = ["Iamconnect_Salesforce_Users"]
-}
