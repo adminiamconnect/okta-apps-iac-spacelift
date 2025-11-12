@@ -52,9 +52,10 @@ module "box" {
   group_names       = ["FT_BOX_ADMINS"]
 }
 
-module "salesforce__beta_app" {
-  source        = "./modules/okta-app-web-saml-preconfig"
-  label         = "Salesforce Beta App "
-  redirect_uris = ["https://test.ft.com/callback"]
-  group_names   = ["Salesforce_Beta_Users"]
+module "salesforce_app" {
+  source            = "./modules/okta-app-web-saml-preconfig"
+  label             = "Salesforce Beta App "
+  preconfigured_app = "salesforce"
+  redirect_uris     = ["https://test.ft.com/callback"]
+  group_names       = ["Salesforce_Beta_Users"]
 }
