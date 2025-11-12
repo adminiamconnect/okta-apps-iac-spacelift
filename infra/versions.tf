@@ -3,7 +3,7 @@ terraform {
   required_providers {
     okta = {
       source  = "okta/okta"
-      version = "= 6.1.0"
+      version = "= 6.3.1"   # <- pin away from 6.4.0 which crashed
     }
   }
 }
