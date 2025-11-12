@@ -29,7 +29,7 @@ output "app_id" {
 }
 
 output "client_id" {
-  value = okta_app_oauth.this.client_id
+  value = okta_app_oauth.SPA.client_id
 }
 
 output "assigned_group_ids" {
