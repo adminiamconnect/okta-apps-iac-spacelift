@@ -1,0 +1,5 @@
+# Example values to copy into terraform.tfvars (do not commit secrets)
+okta_org_name          = "your-okta-org"
+okta_base_url          = "okta.com" # or okta-emea.com / oktapreview.com
+okta_api_token         = "REDACTED"
+okta_max_api_capacity  = 50
