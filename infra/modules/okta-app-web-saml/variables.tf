@@ -42,3 +42,18 @@ variable "group_ids" {
   type    = list(string)
   default = []
 }
+
+variable "subject_name_id_template" {
+  type    = string
+  # Default to the Okta template that uses the user's email as the NameID.
+  # Use "$${...}" to keep the interpolation as a literal template rather than
+  # attempting to evaluate variables in a default value (Terraform disallows
+  # referencing other variables in defaults). This results in the literal
+  # string "${user.email}" being used by the provider.
+  default = "$${user.email}"
+}
+
+variable "authn_context_class_ref" {
+  type    = string
+  default = "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+}

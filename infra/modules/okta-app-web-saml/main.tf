@@ -12,11 +12,13 @@ resource "okta_app_saml" "this" {
   audience    = var.audience
 
   # was: name_id_format = var.name_id_format
-  subject_name_id_format = var.subject_name_id_format
+  subject_name_id_format   = var.subject_name_id_format
+  subject_name_id_template = var.subject_name_id_template
 
-  signature_algorithm = var.signature_algorithm
-  digest_algorithm    = var.digest_algorithm
-  honor_force_authn   = true
+  signature_algorithm     = var.signature_algorithm
+  digest_algorithm        = var.digest_algorithm
+  authn_context_class_ref = var.authn_context_class_ref
+  honor_force_authn       = true
 }
 
 locals {

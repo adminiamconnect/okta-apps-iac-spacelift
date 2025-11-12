@@ -4,11 +4,11 @@ module "groups" {
 }
 
 resource "okta_app_oauth" "native" {
-  label          = var.label
-  type           = "native"
-  grant_types    = ["authorization_code", "refresh_token"]
-  response_types = ["code"]
-  redirect_uris  = var.redirect_uris
+  label                     = var.label
+  type                      = "native"
+  grant_types               = ["authorization_code", "refresh_token"]
+  response_types            = ["code"]
+  redirect_uris             = var.redirect_uris
   post_logout_redirect_uris = var.post_logout_redirect_uris
 }
 
