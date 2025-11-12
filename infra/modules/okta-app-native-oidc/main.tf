@@ -3,7 +3,7 @@ module "groups" {
   group_names = var.group_names
 }
 
-resource "okta_app_oauth" "this" {
+resource "okta_app_oauth" "native" {
   label          = var.label
   type           = "native"
   grant_types    = ["authorization_code", "refresh_token"]
