@@ -6,6 +6,8 @@ module "groups" {
 resource "okta_app_saml" "preconfig" {
   label             = var.label
   preconfigured_app = var.preconfigured_app
+  instance_type     = "browser"
+
 }
 
 locals {
