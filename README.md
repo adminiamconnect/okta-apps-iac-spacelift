@@ -1,191 +1,215 @@
-# iamconnect
-Michael Projects for SSO Pipelines to Okta and other providers
+# 🚀 Automated Okta Infrastructure-as-Code with Spacelift & OpenTofu
 
-# okta-apps-iac-spacelift
-
-Infrastructure-as-Code for managing **Okta applications and groups** using **Terraform (OpenTofu)** and deployed through **Spacelift**.  
-This repository provides a modular, automated, and secure way to define and manage your Okta configuration across multiple environments (dev, staging, prod).
+This repository automates **Okta application and configuration management** using **Spacelift** and **OpenTofu (Terraform-compatible)**.  
+It provides a secure, version-controlled, and auditable workflow for managing Okta resources — with Spacelift handling automation, state, and policy enforcement.
 
 ---
 
-## 🚀 Overview
+## 🧩 Overview
 
-This repo enables:
-- Declarative provisioning of Okta **OIDC** and **SAML** applications.
-- Centralized management of **Okta groups** and app-group assignments.
-- Seamless CI/CD integration via **Spacelift**.
-- Environment separation (dev / staging / prod).
-- Auditable changes via Git-based workflows and PR reviews.
+**Goal:**  
+Enable Infrastructure-as-Code (IaC) for managing Okta apps, users, and integrations using Terraform modules deployed automatically through Spacelift.
 
-Supported app types:
-- ✅ `web_oidc`
-- ✅ `spa_oidc`
-- ✅ `native_oidc`
-- ✅ `web_saml`
-- ✅ `web_saml_preconfig`
-- ✅ `okta_groups` (standalone or per app)
+**Key Benefits:**
+- ✅ Automated CI/CD for Okta IaC
+- 🔒 Secure secret management via Spacelift
+- 🔁 Consistent provisioning and drift detection
+- 📜 Full auditability through GitHub pull requests and Spacelift logs
 
 ---
 
-## 🏗 Repository Structure
+## 🏗️ Architecture
 
-.
-├─ infra/ # Terraform / OpenTofu entry point (Spacelift project root)
-│ ├─ main.tf # Example app deployments
-│ ├─ providers.tf # Okta provider config
-│ ├─ versions.tf # Provider + TF version lock
-│ ├─ modules/
-│ │ ├─ okta-app-web-oidc/
-│ │ ├─ okta-app-spa-oidc/
-│ │ ├─ okta-app-native-oidc/
-│ │ ├─ okta-app-web-saml/
-│ │ ├─ okta-app-web-saml-preconfig/
-│ │ └─ okta-groups/
-│ └─ env/
-│ ├─ dev/
-│ ├─ staging/
-│ └─ prod/
-├─ docs/
-│ └─ okta-spacelift-setup.md # Detailed technical setup guide
-└─ spacelift.yaml # Optional - define stacks as code
-
-yaml
-Copy code
-
----
-
-## ⚙️ Provider Configuration
-
-**File:** `infra/providers.tf`
-
-```hcl
-variable "okta_org_name" {}                    # e.g. dev-12345678
-variable "okta_base_url" { default = "okta.com" } # okta.com | okta-emea.com | oktapreview.com
-variable "okta_api_token" { sensitive = true }
-
-provider "okta" {
-  org_name  = var.okta_org_name
-  base_url  = var.okta_base_url
-  api_token = var.okta_api_token
-}
-🔐 Spacelift Integration
-Connect GitHub repo → Spacelift.
-
-Create a Stack for each environment (e.g. okta-dev, okta-prod).
-
-Set project root = infra (or infra/env/dev, etc).
-
-Add environment variables under Stack → Settings → Environment:
-
-Variable	Example	Type
-TF_VAR_okta_org_name	dev-12345678	Plain
-TF_VAR_okta_base_url	okta-emea.com	Plain
-TF_VAR_okta_api_token	00aBcdEfGhIjKlm...	Secret
-
-🔸 Do not include the SSWS prefix in your API token.
-🔸 Do not use a custom Okta vanity domain.
-
-🧱 Example: Web + SPA OIDC apps
-h
-Copy code
-module "app_web_oidc" {
-  source        = "./modules/okta-app-web-oidc"
-  label         = "ft-portal"
-  redirect_uris = ["https://portal.ft.com/callback"]
-  post_logout_redirect_uris = ["https://portal.ft.com"]
-  group_names   = ["FT_PORTAL_USERS"]
-}
-
-module "app_spa_oidc" {
-  source        = "./modules/okta-app-spa-oidc"
-  label         = "ft-dashboard"
-  redirect_uris = ["https://dashboard.ft.com/callback"]
-  group_names   = ["FT_DASHBOARD_USERS"]
-}
-🧩 Modular Approach
-Each module encapsulates app creation logic:
-
-Module	Purpose
-okta-app-web-oidc	For backend web apps using Authorization Code flow
-okta-app-spa-oidc	For front-end single-page apps using Implicit + PKCE
-okta-app-native-oidc	For mobile/desktop native clients
-okta-app-web-saml	Custom SAML app integration
-okta-app-web-saml-preconfig	Okta Catalog apps (Box, Zendesk, etc.)
-okta-groups	Create or fetch Okta groups
-
-All app modules accept:
-
-group_names → Creates and assigns new groups.
-
-group_ids → Assigns existing groups by ID.
-
-🧠 Spacelift Workflow
-PR opened: Spacelift runs Plan → preview changes.
-PR merged: Spacelift runs Apply → deploys to Okta.
-Manual approvals (recommended) can be enforced via Spacelift policies.
-
-Typical Stack Lifecycle
-Push change → triggers Plan
-
-Review Plan → approve → merge
-
-Stack auto-applies → Okta app created or updated
-
-Logs and state stored in Spacelift
-
-🧰 Local Testing (optional)
-bash
-Copy code
-cd infra
-tofu init
-tofu plan -var 'okta_org_name=dev-12345678' \
-          -var 'okta_base_url=okta-emea.com' \
-          -var 'okta_api_token=00aBcdEf...'
-🧾 Troubleshooting
-Error	Fix
-401 Unauthorized	Check token, org name, base URL, no SSWS prefix
-project root Infra does not exist	Ensure stack Project Root matches folder name exactly
-error creating app	Validate redirect URIs and app type
-rate limit exceeded	Split batch deployments across stacks
-
-🛡 Security Best Practices
-Store tokens only in Spacelift Secrets.
-
-Use separate API tokens for dev and prod.
-
-Enforce manual approval on production applies.
-
-Enable version pinning (= 6.1.0).
-
-Use Spacelift policies to prevent destructive actions.
-
-👥 Contributors
-Role	Name / Team
-IAM Engineering	Michael Corrodus
-Platform Engineering	TBD
-Security Operations	TBD
-
-📚 References
-Okta Terraform Provider Docs
-
-Spacelift Documentation
-
-OpenTofu CLI Reference
-
-
-
-## Stability tweaks for Okta provider in CI
-
-This repo pins the Okta Terraform provider to the `~> 6.4` series and throttles
-API usage via `max_api_capacity` (default 50%).
-
-When running in Spacelift or CI, set Terraform parallelism conservatively to avoid
-rate limiting:
-
-```
-TF_CLI_ARGS_plan  = -parallelism=2
-TF_CLI_ARGS_apply = -parallelism=2
+```mermaid
+flowchart LR
+    A[💻 Developer] -->|Push / PR| B[🪣 GitHub Repo: okta-apps-iac-spacelift]
+    B -->|Trigger| C[⚙️ Spacelift Stack]
+    C -->|Plan & Apply| D[(☁️ Okta API)]
+    D --> E[👥 Okta Applications & Groups]
 ```
 
-You can tune `var.okta_max_api_capacity` and the above parallelism values upward after
-a few stable runs.
+**Flow Explanation:**
+1. Developer commits or opens a pull request in GitHub.
+2. Spacelift automatically triggers a **plan** run.
+3. Upon approval, Spacelift executes **apply**.
+4. Okta configuration updates are applied via API calls through OpenTofu.
+
+---
+
+## 🗂️ Repository Structure
+
+```
+okta-apps-iac-spacelift/
+├── infra/
+│   ├── .terraform/
+│   ├── modules/
+│   ├── main.tf
+│   ├── providers.tf
+│   ├── salesforcetestapp2.tf
+│   ├── terraform.lock.hcl
+│   ├── terraform.tfvars.example
+│   └── versions.tf
+├── modules/
+│   ├── okta-app-native-oidc/
+│   ├── okta-app-spa-oidc/
+│   ├── okta-app-web-oidc/
+│   ├── okta-app-web-saml/
+│   ├── okta-app-web-saml-preconfig/
+│   └── okta-groups/
+└── README.md
+```
+
+📸 **Repo Structure Screenshots**
+
+### `infra` Folder
+![Infra Folder](./screenshots/Screenshot-2025-11-13-00.08.29.png)
+
+### `modules` Folder
+![Modules Folder](./screenshots/Screenshot-2025-11-13-00.08.40.png)
+
+---
+
+## ⚙️ Spacelift Stack Configuration
+
+Spacelift integrates this repository (`adminiamconnect/okta-apps-iac-spacelift`) to automate Okta provisioning.
+
+---
+
+### 🧾 Environment Variables
+
+![Spacelift Environment Variables](./screenshots/Screenshot-2025-11-13-00.03.14.png)
+
+| Variable | Description |
+|-----------|--------------|
+| `SPACELIFT_API_TOKEN` | Auth token for Spacelift automation. |
+| `TF_CLI_ARGS_apply` / `TF_CLI_ARGS_plan` | Control OpenTofu parallelism (`-parallelism=2`). |
+| `TF_VAR_okta_api_token` | Okta API token (stored securely). |
+| `TF_VAR_okta_base_url` | Okta domain (e.g. `okta.com`). |
+| `TF_VAR_okta_org_name` | Okta org identifier (e.g. `integrator-4434817`). |
+
+🔒 **Secret Masking** is enabled to ensure sensitive values are never exposed in logs.
+
+---
+
+### 🧱 Stack Details
+
+![Spacelift Stack Details](./screenshots/Screenshot-2025-11-13-00.03.48.png)
+
+| Field | Description |
+|--------|-------------|
+| **Name** | `okta` |
+| **Space** | `root` |
+| **Labels** | Optional tags to auto-attach contexts, enable policies, or integrate with Infracost. |
+| **Description** | Short summary of the stack’s purpose. |
+
+---
+
+### 🛠️ Source Code Configuration
+
+![Spacelift Source Code](./screenshots/Screenshot-2025-11-13-00.03.58.png)
+
+| Setting | Description |
+|----------|-------------|
+| **Repository** | `adminiamconnect/okta-apps-iac-spacelift` |
+| **Branch** | `main` |
+| **Project Root** | `infra/` |
+| **Checkout Paths** | Optional for modular project filtering. |
+
+🧩 This ensures Spacelift monitors the `infra/` directory for IaC changes and triggers plan runs automatically.
+
+---
+
+### 🧰 Vendor Configuration
+
+![Spacelift Vendor Settings](./screenshots/Screenshot-2025-11-13-00.04.07.png)
+
+| Parameter | Value |
+|------------|--------|
+| **Vendor** | Terraform / OpenTofu |
+| **Version** | `1.10.7` |
+| **Smart Sanitization** | ✅ Enabled |
+| **External State Access** | ❌ Disabled (recommended) |
+
+> OpenTofu ensures full Terraform compatibility while remaining open-source and auditable.
+
+---
+
+### ⚙️ Behavior Configuration
+
+![Spacelift Behavior Settings](./screenshots/Screenshot-2025-11-13-00.04.27.png)
+
+| Setting | Description |
+|----------|-------------|
+| **Administrative Access** | ⚠️ Deprecated (migrating to Role-Based Access by June 2026). |
+| **Enable Secret Masking** | ✅ Redacts secrets automatically in logs. |
+| **Protect from Deletion** | ✅ Prevents accidental removal of production stacks. |
+| **Transfer Sensitive Outputs** | ✅ Allows secure variable propagation between stacks. |
+| **Autodeploy / Autoretry** | 🔄 Optional for full automation pipelines. |
+
+---
+
+## 🔁 CI/CD Workflow
+
+1. **Developer pushes code** → GitHub triggers Spacelift.
+2. **Spacelift Plan** → Generates preview of changes.
+3. **Approval Gate** → Manual or automatic depending on policy.
+4. **Spacelift Apply** → Executes Terraform / OpenTofu apply.
+5. **State stored securely** → Managed by Spacelift backend.
+6. **Notifications** → Sent to Slack or email (if integrated).
+
+---
+
+## 🔒 Security Best Practices
+
+| Recommendation | Description |
+|----------------|-------------|
+| **Use Spacelift Contexts** | Centralize shared variables and secrets. |
+| **Enable Secret Masking** | Protect tokens and API keys in logs. |
+| **Role-Based Access** | Replace administrative access before June 2026. |
+| **Limit External State** | Disable public read access unless required. |
+| **Rotate Tokens** | Rotate `TF_VAR_okta_api_token` periodically. |
+
+---
+
+## 🧠 Best Practices for Okta IaC
+
+| Area | Recommendation |
+|------|----------------|
+| **Structure** | Keep Terraform modules modular and reusable. |
+| **Naming** | Prefix stacks by provider (`okta-`, `google-`, etc). |
+| **Versioning** | Pin all provider and module versions. |
+| **Parallelism** | Use conservative concurrency (`-parallelism=2`). |
+| **Testing** | Always review and validate `plan` before `apply`. |
+
+---
+
+## 💡 Example Developer Workflow
+
+```bash
+# Developer updates or adds new Okta app module
+git add .
+git commit -m "Add new Okta SAML app configuration"
+git push origin main
+
+# Spacelift automatically triggers
+spacelift plan
+# → generates plan and awaits approval
+
+# Once approved
+spacelift apply
+# → applies configuration to Okta via API
+```
+
+---
+
+## 🏁 Conclusion
+
+🎉 This setup provides a **scalable, secure, and automated** Okta Infrastructure-as-Code pipeline powered by **Spacelift + OpenTofu**.  
+All configuration changes are version-controlled, peer-reviewed, and applied consistently — ensuring a robust, auditable identity management process.
+
+---
+
+### 📚 References
+- [Spacelift Documentation](https://docs.spacelift.io)
+- [OpenTofu](https://opentofu.org)
+- [Okta Terraform Provider](https://registry.terraform.io/providers/okta/okta/latest/docs)
