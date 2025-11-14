@@ -62,3 +62,14 @@ module "salesforce_app" {
   audience    = "https://legacy.ft.com/saml/metadata"
   group_names = ["Salesforce Users"]
 }
+
+######## WEB SAML ########
+module "lucid_app" {
+  source      = "./modules/okta-app-web-saml"
+  label       = "Lucid test"
+  sso_url     = "https://lucid.test.com/saml/acs"
+  recipient   = "https://lucid.test.com/saml/acs"
+  destination = "https://lucid.test.com/saml/acs"
+  audience    = "https://lucid.test.com/saml/metadata"
+  group_names = ["Lucid Users"]
+}
