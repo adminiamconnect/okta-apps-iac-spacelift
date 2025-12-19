@@ -73,3 +73,12 @@ module "lucid_app" {
   audience    = "https://lucid.test.com/saml/metadata"
   group_names = ["Lucid Users"]
 }
+
+######## WEB SAML ########
+module "iamconnect_app" {
+  source      = "./modules/okta-app-web-saml"
+  label       = "IAM Connect"
+  sso_url     = "https://iamconnect.co.uk/saml/acs"
+  audience    = "https://iamconnect.co.uk/saml/metadata"
+  group_names = ["IAM Connect Users"]
+}
