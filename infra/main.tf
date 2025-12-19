@@ -84,3 +84,11 @@ module "iamconnect_app" {
   audience    = "https://iamconnect.co.uk/saml/metadata"
   group_names = ["IAM Connect Users"]
 }
+
+######## WEB SAML PRECONFIG ########
+module "AWS IAM Identity Center" {
+  source            = "./modules/okta-app-web-saml-preconfig"
+  label             = "AWS IAM Identity Center"
+  preconfigured_app = "amazon_aws_sso"
+  group_names       = ["AWS Admins"]
+}
