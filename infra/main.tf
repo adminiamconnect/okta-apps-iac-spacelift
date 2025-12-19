@@ -93,8 +93,8 @@ module "AWS" {
   preconfigured_app = "amazon_aws_sso"
 
   app_settings_json = jsonencode({
-    acsURL   = "https://portal.sso.eu-west-1.amazonaws.com/saml/acs/894541012592"
-    entityID = "https://portal.sso.eu-west-1.amazonaws.com/saml/metadata/894541012592"
+    acsURL   = "https://eu-west-1.signin.aws.amazon.com/platform/saml/acs/4455422d84a27c9f-9f18-41fa-81b4-769660979b1e
+    entityID = "https://eu-west-1.signin.aws.amazon.com/platform/saml/d-936792b6ea"
   })
 
   group_names = ["AWS Admins"]
