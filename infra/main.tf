@@ -91,4 +91,9 @@ module "AWS" {
   label             = "AWS IAM Identity Center"
   preconfigured_app = "amazon_aws_sso"
   group_names       = ["AWS Admins"]
+app_settings_json = <<JSON
+{
+  "loginURL": "https://eu-west-1.console.aws.amazon.com/console/home?region=eu-west-1"
+}
+JSON
 }
