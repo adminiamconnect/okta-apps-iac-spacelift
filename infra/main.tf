@@ -99,4 +99,13 @@ module "AWS" {
 
   group_names = ["AWS Admins"]
 }
-
+######## WEB SAML ########
+module "Entra_enterprise_app" {
+  source      = "./modules/okta-app-web-saml"
+  label       = "Entra ID"
+  sso_url     = "https://login.microsoftonline.com/c9fe51cf-f49a-4e60-b07a-ccd553d45f5c/saml2"
+  recipient   = "https://login.microsoftonline.com/c9fe51cf-f49a-4e60-b07a-ccd553d45f5c/saml2"
+  destination = "https://login.microsoftonline.com/c9fe51cf-f49a-4e60-b07a-ccd553d45f5c/saml2"
+  audience    = "https://login.microsoftonline.com/c9fe51cf-f49a-4e60-b07a-ccd553d45f5c/federationmetadata/2007-06/federationmetadata.xml?appid=ffa3aaf5-5755-450a-a7ad-9c48dd12f5a3"
+  group_names = ["Entra ID Users"]
+}
