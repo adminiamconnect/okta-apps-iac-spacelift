@@ -93,10 +93,9 @@ module "AWS" {
   preconfigured_app = "amazon_aws_sso"
 
   app_settings_json = jsonencode({
-    awsAccountId         = "894541012592"
-    identityProviderArn = "arn:aws:iam::894541012592:saml-provider/Okta"
+    acsURL   = "https://<your-aws-sso-domain>/saml/acs"
+    entityID = "https://<your-aws-sso-domain>/saml/metadata"
   })
 
   group_names = ["AWS Admins"]
 }
-
