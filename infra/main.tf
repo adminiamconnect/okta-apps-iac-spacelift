@@ -90,10 +90,7 @@ module "AWS" {
   source            = "./modules/okta-app-web-saml-preconfig"
   label             = "AWS IAM Identity Center"
   preconfigured_app = "amazon_aws_sso"
+  sso_url     = "https://lucid.test.com/saml/acs"
+  audience    = "https://lucid.test.com/saml/metadata"
   group_names       = ["AWS Admins"]
-app_settings_json = <<JSON
-{
-  "loginURL": "https://eu-west-1.console.aws.amazon.com/console/home?region=eu-west-1"
-}
-JSON
 }
