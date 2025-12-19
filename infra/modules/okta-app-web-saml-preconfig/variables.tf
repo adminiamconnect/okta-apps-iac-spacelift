@@ -15,3 +15,8 @@ variable "group_ids" {
   type    = list(string)
   default = []
 }
+
+variable "app_settings_json" {
+  type    = string
+  default = null
+}
