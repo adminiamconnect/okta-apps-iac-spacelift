@@ -79,6 +79,8 @@ module "iamconnect_app" {
   source      = "./modules/okta-app-web-saml"
   label       = "IAM Connect"
   sso_url     = "https://iamconnect.co.uk/saml/acs"
+  recipient   = "https://iamconnect.co.uk/saml/acs"
+  destination = "https://iamconnect.co.uk/saml/acs"
   audience    = "https://iamconnect.co.uk/saml/metadata"
   group_names = ["IAM Connect Users"]
 }
