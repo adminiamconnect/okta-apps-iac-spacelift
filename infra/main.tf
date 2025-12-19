@@ -87,8 +87,16 @@ module "iamconnect_app" {
 
 ######## WEB SAML PRECONFIG ########
 module "AWS" {
-  source            = "./modules/okta-app-web-saml-preconfig"
+  source = "./modules/okta-app-web-saml-preconfig"
+
   label             = "AWS IAM Identity Center"
   preconfigured_app = "amazon_aws_sso"
-  group_names       = ["AWS Admins"]
+
+  app_settings_json = jsonencode({
+    awsAccountId         = "894541012592"
+    identityProviderArn = "arn:aws:iam::894541012592:saml-provider/Okta"
+  })
+
+  group_names = ["AWS Admins"]
 }
+
