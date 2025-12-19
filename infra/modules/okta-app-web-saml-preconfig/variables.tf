@@ -15,13 +15,3 @@ variable "group_ids" {
   type    = list(string)
   default = []
 }
-
-variable "sso_url" {
-  description = "SAML ACS URL"
-  type        = string
-}
-
-variable "audience" {
-  description = "SAML Audience / Entity ID"
-  type        = string
-}
