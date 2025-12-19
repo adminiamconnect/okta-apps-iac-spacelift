@@ -9,7 +9,7 @@ module "shared_groups" {
 }
 
 ######## WEB OIDC ########
-module "IAM Connect" {
+module "IAM_Connect" {
   source                    = "./modules/okta-app-web-oidc"
   label                     = "IAM Connect"
   redirect_uris             = ["https://iamconnect.co.uk"]
@@ -18,7 +18,7 @@ module "IAM Connect" {
 }
 
 ######## NATIVE OIDC ########
-module "IAM Connect2" {
+module "IAM_Connect2" {
   source        = "./modules/okta-app-native-oidc"
   label         = "IAM Connect 2"
   redirect_uris = ["https://iamconnect.co.uk"]
