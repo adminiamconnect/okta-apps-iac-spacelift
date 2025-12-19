@@ -86,7 +86,7 @@ module "iamconnect_app" {
 }
 
 ######## WEB SAML PRECONFIG ########
-module "AWS IAM Identity Center" {
+module "AWS" {
   source            = "./modules/okta-app-web-saml-preconfig"
   label             = "AWS IAM Identity Center"
   preconfigured_app = "amazon_aws_sso"
