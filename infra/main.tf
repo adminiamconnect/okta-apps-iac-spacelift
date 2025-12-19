@@ -90,7 +90,5 @@ module "AWS" {
   source            = "./modules/okta-app-web-saml-preconfig"
   label             = "AWS IAM Identity Center"
   preconfigured_app = "amazon_aws_sso"
-  sso_url     = "https://lucid.test.com/saml/acs"
-  audience    = "https://lucid.test.com/saml/metadata"
   group_names       = ["AWS Admins"]
 }
