@@ -7,6 +7,7 @@ resource "okta_app_saml" "preconfig" {
   label             = var.label
   preconfigured_app = var.preconfigured_app
 
+  app_settings_json = var.app_settings_json
 }
 
 locals {
