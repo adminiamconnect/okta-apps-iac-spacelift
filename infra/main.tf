@@ -25,6 +25,14 @@ module "IAM_Connect2" {
   group_names   = ["IAM Connect 2 Users"]
 }
 
+######## NATIVE OIDC ########
+module "IAM_Connect3" {
+  source        = "./modules/okta-app-native-oidc"
+  label         = "IAM Connect 3"
+  redirect_uris = ["https://iamconnect.co.uk"]
+  group_names   = ["IAM Connect 3 Users"]
+}
+
 ######## WEB SAML PRECONFIG ########
 module "AWS" {
   source = "./modules/okta-app-web-saml-preconfig"
