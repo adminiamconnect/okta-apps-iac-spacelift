@@ -1,13 +1,3 @@
-#######################################################
-# Example: Okta Applications and Groups (single env)
-#######################################################
-
-# Shared groups
-module "shared_groups" {
-  source      = "./modules/okta-groups"
-  group_names = ["FT_SHARED_USERS"]
-}
-
 ######## WEB OIDC ########
 module "IAM_Connect" {
   source                    = "./modules/okta-app-web-oidc"
