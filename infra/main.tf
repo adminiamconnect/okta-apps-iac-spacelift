@@ -58,14 +58,3 @@ module "Entra_enterprise_app" {
   audience    = "https://login.microsoftonline.com/c9fe51cf-f49a-4e60-b07a-ccd553d45f5c/federationmetadata/2007-06/federationmetadata.xml?appid=ffa3aaf5-5755-450a-a7ad-9c48dd12f5a3"
   group_names = ["Entra ID Users"]
 }
-
-######## WEB SAML ########
-module "Salesforce_app" {
-  source      = "./modules/okta-app-web-saml"
-  label       = "Salesforce Global"
-  sso_url     = "https://salesforce.global.com"
-  recipient   = "https://salesforce.global.com"
-  destination = "https://salesforce.global.com"
-  audience    = "https://salesforce.global.com"
-  group_names = ["Salesforce Global Users"]
-}
